@@ -8,7 +8,7 @@ RxAndroid Demo on github opensource API (https://api.github.com/repos/crashlytic
 3. ButterKnife (https://github.com/JakeWharton/butterknife)
 4. Picasso (https://github.com/square/picasso)
 
-Good Resources to learn RxAndroid with Retrofit:
+# Good Resources to learn RxAndroid with Retrofit:
 
 1. Grokking RxJava, Part 1-4 
 (http://blog.danlew.net/2014/09/15/grokking-rxjava-part-1/)
@@ -20,7 +20,14 @@ Good Resources to learn RxAndroid with Retrofit:
 (http://inthecheesefactory.com/blog/retrofit-2.0/en)
 
 4. Crunching RxAndroid
+
 (https://medium.com/crunching-rxandroid)
 
 5. Retrofit — Getting Started and Create an Android Client
+
 (https://futurestud.io/blog/retrofit-getting-started-and-android-client)
+
+
+# Enahancements:
+
+M-V-P Design Pattern 
