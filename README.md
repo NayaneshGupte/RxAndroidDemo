@@ -20,12 +20,10 @@ RxAndroid Demo on github opensource API (https://api.github.com/repos/crashlytic
 (http://inthecheesefactory.com/blog/retrofit-2.0/en)
 
 4. Crunching RxAndroid
-
-(https://medium.com/crunching-rxandroid)
+ (https://medium.com/crunching-rxandroid)
 
 5. Retrofit — Getting Started and Create an Android Client
-
-(https://futurestud.io/blog/retrofit-getting-started-and-android-client)
+ (https://futurestud.io/blog/retrofit-getting-started-and-android-client)
 
 
 # Enahancements:
