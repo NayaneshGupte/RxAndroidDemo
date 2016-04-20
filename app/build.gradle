@@ -1,0 +1,61 @@
+apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
+
+    defaultConfig {
+        applicationId "com.technosavy.rxandroiddemo"
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+// For Mac OSX
+String getJavaHome(String version) {
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine "/usr/libexec/java_home", "-v", version
+        standardOutput = stdout;
+    }
+    return stdout.toString().trim()
+}
+
+// JAVA8_HOME and JAVA_HOME can differ for your syste
+retrolambda {
+    jdk System.getenv('JAVA8_HOME') ?: getJavaHome("1.8")
+    oldJdk System.getenv('JAVA_HOME') ?: getJavaHome("1.7")
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:design:23.3.0'
+    compile 'com.android.support:recyclerview-v7:23.3.0'
+    compile 'com.android.support:cardview-v7:23.3.0'
+    //Rx Android
+    compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'io.reactivex:rxjava:1.1.3'
+    //Retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.0.2'
+    //butterknife
+    // picasso for imageloading
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+}
