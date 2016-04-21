@@ -24,7 +24,7 @@ public class GitHubWrapper {
     public static final String TAG = GitHubWrapper.class.getSimpleName();
 
 
-    public static void getIssuesForRepo(Context context ,final IssuesListAdapter adapter) {
+    public static void getIssuesForRepo(Context context, final IssuesListAdapter adapter) {
 
         GitHubService gitHubService = ServiceFactory.createServiceFrom(GitHubService.class, GitHubService.ENDPOINT);
 
@@ -39,26 +39,37 @@ public class GitHubWrapper {
                     public Observable<Issue> call(Issue issue) {
 
 
-                        return gitHubService.getComments(issue.getNumber())
-                                .subscribeOn(Schedulers.newThread())
-                                .observeOn(AndroidSchedulers.mainThread())
+                        return gitHubService.getComments(issue.getNumber())// use retrofit service to create request
+                                .subscribeOn(Schedulers.newThread()) // make request on worker thread using thread pool
+                                .observeOn(AndroidSchedulers.mainThread())// retrieve results on main thread
                                 .map(comments -> {
 
-                                    Collections.sort(comments, new DateComparator());
-                                    issue.setCommentList(comments);
+                                    issue.setCommentList(comments);//update issue object with list of comments
 
                                     return issue;
-                                });
+                                })
+                                //start computation thread for sorting to reduce work on UI thread
+                                .subscribeOn(Schedulers.computation())
+                                .map(issue1 -> {
+
+                                    Collections.sort(issue1.getCommentList(), new DateComparator());//sort comments on basis of date
+
+                                    return issue1;
+                                })
+                                .observeOn(AndroidSchedulers.mainThread());// switch back to main thread
+
                     }
 
 
                 })
                 .toList()// convert back to list
+                .subscribeOn(Schedulers.computation())// start computation for sorting Issues
                 .map(issues -> { // sort on basis of date
 
-                    Collections.sort(issues, new DateComparator());
+                    Collections.sort(issues, new DateComparator());// sort issues
                     return issues;
                 })
+                .observeOn(AndroidSchedulers.mainThread())// switch back to main thread
                 // lambda expression with no exception handling can result into crash
                 .subscribe(new Subscriber<List<Issue>>() {
                     @Override
@@ -75,42 +86,42 @@ public class GitHubWrapper {
                     @Override
                     public void onNext(List<Issue> issues) {
 
-                        adapter.add(issues);
+                        adapter.add(issues);//update adapter
                     }
-                });//update adapter
+                });
 
     }
 
 
-    public static void getIssuesSerially(Context context ,final IssuesListAdapter adapter) {
+    public static void getIssuesSerially(Context context, final IssuesListAdapter adapter) {
 
         GitHubService gitHubService = ServiceFactory.createServiceFrom(GitHubService.class, GitHubService.ENDPOINT);
 
         gitHubService.getIssuesList()// get all issues
-                .filter(issues1 -> AppUtil.isNetworkAvailable(context))
+                .filter(issues1 -> AppUtil.isNetworkAvailable(context))// check if network is available
                 .subscribeOn(Schedulers.io())// process request on Worker thread
                 .observeOn(AndroidSchedulers.mainThread()) // get results on main thread
                 .flatMap(issues -> Observable.from(issues))// get each Observable<Issue>
                 .filter(issue -> issue.getCommentsUrl() != null)// don't request for comments if url is null
-
                 .flatMap(new Func1<Issue, Observable<Issue>>() { // GET all comments for each issue
                     @Override
                     public Observable<Issue> call(Issue issue) {
 
 
-                        return gitHubService.getComments(issue.getNumber())
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
+                        return gitHubService.getComments(issue.getNumber())// use Retrofit insterface to get comments
+                                .subscribeOn(Schedulers.io())// make request on worker thread using thread pool
+                                .observeOn(AndroidSchedulers.mainThread())// get results on main thread
                                 .map(comments -> {
 
-                                    issue.setCommentList(comments);
+                                    issue.setCommentList(comments); // update issue object with comments list
 
                                     return issue;
                                 })
-                                .subscribeOn(Schedulers.computation())// reduce the work on main thread
+                                .filter(issue1 -> issue1.getCommentList() != null)// start computation after checking this boolean condition
+                                .subscribeOn(Schedulers.computation())// reduce the work on main thread of sorting
                                 .map(issue1 -> {
 
-                                    Collections.sort(issue1.getCommentList(), new DateComparator());
+                                    Collections.sort(issue1.getCommentList(), new DateComparator());//sort on basis of date
 
                                     return issue1;
                                 });
@@ -137,7 +148,7 @@ public class GitHubWrapper {
                     @Override
                     public void onNext(Issue issue) {
 
-                        adapter.add(issue);
+                        adapter.add(issue);// finally update adapter
                     }
                 });
 
