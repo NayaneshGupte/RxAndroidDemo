@@ -60,13 +60,13 @@ public class IssueListActivity extends BaseActivity implements OnItemClickListen
 
             case RETRIEVE_DATA_IN_ONE_GO:
 
-                GitHubWrapper.getIssuesForRepo(adapter);
+                GitHubWrapper.getIssuesForRepo(this,adapter);
 
                 break;
 
             case RETRIEVE_DATA_IN_CHUNCKS:
 
-                GitHubWrapper.getIssuesSerially(adapter);
+                GitHubWrapper.getIssuesSerially(this,adapter);
 
                 break;
         }

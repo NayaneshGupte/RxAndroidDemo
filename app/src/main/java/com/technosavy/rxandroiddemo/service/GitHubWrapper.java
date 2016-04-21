@@ -1,5 +1,8 @@
 package com.technosavy.rxandroiddemo.service;
 
+import android.content.Context;
+
+import com.technosavy.rxandroiddemo.Utils.AppUtil;
 import com.technosavy.rxandroiddemo.Utils.DateComparator;
 import com.technosavy.rxandroiddemo.adapter.IssuesListAdapter;
 import com.technosavy.rxandroiddemo.model.issues.Issue;
@@ -21,12 +24,13 @@ public class GitHubWrapper {
     public static final String TAG = GitHubWrapper.class.getSimpleName();
 
 
-    public static void getIssuesForRepo(final IssuesListAdapter adapter) {
+    public static void getIssuesForRepo(Context context ,final IssuesListAdapter adapter) {
 
         GitHubService gitHubService = ServiceFactory.createServiceFrom(GitHubService.class, GitHubService.ENDPOINT);
 
         gitHubService.getIssuesList()// get all issues
-                .subscribeOn(Schedulers.newThread())// process request on Worker thread
+                .filter(issues -> AppUtil.isNetworkAvailable(context))
+                .subscribeOn(Schedulers.io())// process request on Worker thread
                 .observeOn(AndroidSchedulers.mainThread()) // get results on main thread
                 .flatMap(issues -> Observable.from(issues))// get each Observable<Issue>
                 .filter(issue -> issue.getCommentsUrl() != null)// don't request for comments if url is null
@@ -78,11 +82,12 @@ public class GitHubWrapper {
     }
 
 
-    public static void getIssuesSerially(final IssuesListAdapter adapter) {
+    public static void getIssuesSerially(Context context ,final IssuesListAdapter adapter) {
 
         GitHubService gitHubService = ServiceFactory.createServiceFrom(GitHubService.class, GitHubService.ENDPOINT);
 
         gitHubService.getIssuesList()// get all issues
+                .filter(issues1 -> AppUtil.isNetworkAvailable(context))
                 .subscribeOn(Schedulers.io())// process request on Worker thread
                 .observeOn(AndroidSchedulers.mainThread()) // get results on main thread
                 .flatMap(issues -> Observable.from(issues))// get each Observable<Issue>
