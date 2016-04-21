@@ -2,4 +2,7 @@
     <string name="app_name">RxAndroidDemo</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_base">BaseActivity</string>
+    <string name="retrieve_in_one_call">Retrieve In One Call</string>
+    <string name="retrieve_one_by_one">Retrieve One By One</string>
+    <string name="choose_action">Choose Action</string>
 </resources>

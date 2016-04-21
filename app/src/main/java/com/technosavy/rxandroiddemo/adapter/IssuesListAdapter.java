@@ -42,6 +42,12 @@ public class IssuesListAdapter extends RecyclerView.Adapter<IssuesViewHolder> {
         notifyItemRangeInserted(0 , data.size()-1);
     }
 
+    public void add (Issue issue){
+
+        this.data.add(issue);
+        notifyItemInserted(this.data.size());
+    }
+
 
     @Override
     public IssuesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
