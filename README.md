@@ -11,11 +11,15 @@ RxAndroid Demo on github opensource [API][githubapi]
 # Good Resources to learn RxAndroid with Retrofit:
 
 1. [Grokking RxJava, Part 1-4][grokking]
+
 2. [Retrofit and RxJava (Netflix Open Source Meetup S02E02) by Jake Wharton][retroandrx]
+
 3. [Retrofit 2.0: The biggest update yet on the best HTTP Client Library for Android][retrofitbiggest]
+
 4. [Crunching RxAndroid][crunching]
 
 5. [Retrofit — Getting Started and Create an Android Client][retrofitgettingstarted]
+
 6. [Effective RxJava][effectiverx]
 
 
