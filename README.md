@@ -25,7 +25,7 @@ RxAndroid Demo on github opensource [API][githubapi]
 
 # Enahancements:
 
-M-V-P Design Pattern
+[M-V-P] Design Pattern
 
  [grokking]: <http://blog.danlew.net/2014/09/15/grokking-rxjava-part-1/>
  [retroandrx]: <https://speakerdeck.com/jakewharton/retrofit-and-rxjava-netflix-open-source-meetup-s02e02>
@@ -38,3 +38,4 @@ M-V-P Design Pattern
  [ButterKnife]: <https://github.com/JakeWharton/butterknife>
  [Picasso]: <https://github.com/square/picasso>
  [effectiverx]: <https://github.com/mgp/effective-rxjava/tree/master/items>
+ [M-V-P]: <https://github.com/googlesamples/android-architecture/tree/todo-mvp-clean/#android-architecture-blueprints-beta---mvp--clean-architecture>
